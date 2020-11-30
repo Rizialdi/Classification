@@ -130,6 +130,4 @@ lightning_logs/
 # PS1="\u@\h$ "
 
 # large input data files
-input
-notebooks
-typings/torchvision
+input/cassava-leaf-disease-classification
