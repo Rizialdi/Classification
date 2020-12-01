@@ -25,23 +25,18 @@ class LitModelClass(pl.LightningModule):
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
 
-        # acc = self.accuracy(torch.argmax(y_hat, dim=1), y)
-        # pbar = {"train_acc": acc}
-        return {"loss": loss}  # , "progress_bar": pbar}
+        acc = self.accuracy(torch.argmax(y_hat, dim=1), y)
+        pbar = {"train_acc": acc}
+        return {"loss": loss, "progress_bar": pbar}
 
-    # def validation_step(self, batch, batch_idx):
-    #     results = self.training_step(batch, batch_idx)
-    #     results['progress_bar']['val_acc'] = results['progress_bar']
-    #     ['train_acc']
-
-    #     del results['progress_bar']['train_acc']
-
-    #     return results
+    def validation_step(self, batch, batch_idx):
+        results = self.training_step(batch, batch_idx)
+        return results
 
     def validation_epoch_end(self, val_step_outputs):
         avg_val_loss = torch.tensor([x['loss']
                                      for x in val_step_outputs]).mean()
-        avg_val_acc = torch.tensor([x['progress_bar']['val_acc']
+        avg_val_acc = torch.tensor([x['progress_bar']['train_acc']
                                     for x in val_step_outputs]).mean()
 
         pbar = {"val_acc": avg_val_acc}
