@@ -12,4 +12,5 @@ NUM_WORKERS: int = 4
 BATCH_SIZE: int = 64
 SPLIT_SIZE: float = 0.9
 
-DATA_PATH: str = "../input/cassava-leaf-disease-classification"
+DATA_PATH: str = "input/cassava-leaf-disease-classification"
+# DATA_PATH: str = "../input/cassava-leaf-disease-classification"

@@ -38,7 +38,7 @@ class LitDataClass(LightningDataModule):
 
         # shuffling and reset index
         train_csv.drop('image_id', axis=1, inplace=True)
-        train_csv = train_csv.sample(frac=0.1).reset_index(drop=True)
+        train_csv = train_csv.sample(frac=0.3).reset_index(drop=True)
 
         # Stratified kFold cross validation
         kFold = model_selection.StratifiedKFold(n_splits=5)

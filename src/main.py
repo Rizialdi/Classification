@@ -12,8 +12,8 @@ if __name__ == "__main__":
     # data
     cassava_data = LitDataClass(batch_size=BATCH_SIZE, train_val_split=0.9)
 
-    trainer = pl.Trainer(deterministic=True, max_epochs=1,
-                         fast_dev_run=True)  # fast_dev_run=True
+    trainer = pl.Trainer(deterministic=True, max_epochs=3,
+                         gpus=1)  # fast_dev_run=True
 
     trainer.fit(cassava_model, cassava_data)
 
