@@ -4,6 +4,7 @@ import torch.nn.functional as F
 
 from model_zoo.models import get_model
 from params import LR
+from utils import telegram_bot
 import pytorch_lightning as pl
 
 
@@ -18,6 +19,11 @@ class LitModelClass(pl.LightningModule):
     # useful only when doing inference
     def forward(self, x):
         return self.model(x)
+
+    def on_fit_start(self):
+        # send a notification
+        message = 'Your training has started 🔥 ✨'
+        telegram_bot(message)
 
     def training_step(self, batch, batch_idx):
         x, y = batch
@@ -40,6 +46,10 @@ class LitModelClass(pl.LightningModule):
                                     for x in val_step_outputs]).mean()
 
         pbar = {"val_acc": avg_val_acc}
+
+        # send a notification
+        telegram_bot(f"Validation epoch is over ✨ {pbar} ✨")
+
         return {'val_loss': avg_val_loss, "progress_bar": pbar}
 
     def configure_optimizers(self):

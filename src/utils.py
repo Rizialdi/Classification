@@ -2,6 +2,8 @@ from torch.nn import CrossEntropyLoss
 import pytorch_lightning as pl
 import numpy as np
 from params import NUM_CLASSES
+import requests
+from decouple import config
 import torch
 
 ONE_HOT = np.eye(NUM_CLASSES)
@@ -39,3 +41,16 @@ def accuracy_fn(pred: torch.Tensor, truth: torch.Tensor):
         return None
 
     return pl.metrics.Accuracy()(pred, truth)
+
+
+def telegram_bot(bot_message):
+    # load env variables from .env
+    bot_token = config('BOT_TOKEN')
+    bot_chatID = config('CHAT_ID')
+
+    send_text = \
+        f"https://api.telegram.org/bot{bot_token}/" + \
+        f"sendMessage?chat_id={bot_chatID}" + \
+        f"&parse_mode=Markdown&text={bot_message}"
+
+    requests.post(send_text)

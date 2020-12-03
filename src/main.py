@@ -1,5 +1,5 @@
 from data.dataModule import LitDataClass
-from params import NUM_CLASSES, BATCH_SIZE
+from params import NUM_CLASSES, BATCH_SIZE, EPOCHS
 from training.train import LitModelClass
 import pytorch_lightning as pl
 
@@ -12,8 +12,9 @@ if __name__ == "__main__":
     # data
     cassava_data = LitDataClass(batch_size=BATCH_SIZE, train_val_split=0.9)
 
-    trainer = pl.Trainer(deterministic=True, max_epochs=3,
-                         gpus=1)  # fast_dev_run=True
+    # fast_dev_run=True
+    trainer = pl.Trainer(deterministic=True,
+                         max_epochs=EPOCHS, fast_dev_run=True)
 
     trainer.fit(cassava_model, cassava_data)
 
