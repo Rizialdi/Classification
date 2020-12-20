@@ -129,3 +129,6 @@ lightning_logs/
 
 # large input data files
 input/cassava-leaf-disease-classification
+input/cassava-disease
+src/wandb
+output/

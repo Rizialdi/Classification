@@ -1,7 +1,7 @@
 import torch
 from torch import optim
 import torch.nn.functional as F
-
+import wandb
 from model_zoo.models import get_model
 from params import LR
 from utils import telegram_bot
@@ -11,6 +11,7 @@ import pytorch_lightning as pl
 class LitModelClass(pl.LightningModule):
     def __init__(self, name: str, num_classes):
         super().__init__()
+        self.save_hyperparameters({"lr": LR})
         self.name = name
         self.num_classes = num_classes
         self.accuracy = pl.metrics.Accuracy()
@@ -50,7 +51,10 @@ class LitModelClass(pl.LightningModule):
         # send a notification
         telegram_bot(f"Validation epoch is over ✨ {pbar} ✨")
 
+        wandb.log({'val_loss': avg_val_loss, "progress_bar": pbar})
+
         return {'val_loss': avg_val_loss, "progress_bar": pbar}
 
     def configure_optimizers(self):
+        # optim.Adam(self.parameters(), lr=self.hparams.lr)
         return optim.Adam(self.model.parameters(), lr=LR)
