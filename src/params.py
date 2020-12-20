@@ -3,7 +3,6 @@ import warnings
 warnings.simplefilter(action="ignore", category=UserWarning)
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
-
 LR = 1e-3
 SEED: int = 42
 EPOCHS: int = 5

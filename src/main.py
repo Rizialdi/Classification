@@ -9,7 +9,7 @@ from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 
 if __name__ == "__main__":
     # pretrained model's name
-    selected_model = "efficientnet-b0"
+    selected_model = "efficientnet-b1"
 
     # seed everything for reproducibility
     pl.seed_everything(seed=SEED)

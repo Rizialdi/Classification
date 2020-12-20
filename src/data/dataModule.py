@@ -3,7 +3,7 @@ from pytorch_lightning import LightningDataModule
 import pandas as pd
 import os
 from sklearn import model_selection
-from torchvision import datasets, transforms
+from torchvision import transforms
 from torch.utils.data import DataLoader
 from data.dataset import CassavaDataset
 
@@ -32,7 +32,6 @@ class LitDataClass(LightningDataModule):
         # just download the data
         # since the data is locally
         # we ignore this step
-        datasets.MNIST
         pass
 
     def setup(self, na=1):
