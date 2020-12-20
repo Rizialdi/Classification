@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
     # dataModule
     cassava_data = LitDataClass(
-        fold=0,
+        fold=2,
         subset=0.1,
         batch_size=BATCH_SIZE,
         train_val_split=0.9,

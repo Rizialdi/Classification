@@ -102,8 +102,10 @@ class LitDataClass(LightningDataModule):
         self.train_data = self.train_data.sample(frac=1).reset_index(drop=True)
         self.val_data = self.val_data.sample(frac=1).reset_index(drop=True)
 
-        self.train_dataset = CassavaDataset(self.train_data, {})
-        self.val_dataset = CassavaDataset(self.val_data, {})
+        self.train_dataset = CassavaDataset(
+            self.train_data)
+        self.val_dataset = CassavaDataset(
+            self.val_data)
 
         # delete non useful constants
         del self.train_data
@@ -125,10 +127,3 @@ class LitDataClass(LightningDataModule):
             shuffle=True,
             num_workers=NUM_WORKERS)
         return val_dataloader
-
-    # def test_dataloader(self):
-    #     test_dataloader = DataLoader(
-    #         self.test_data,
-    #         batch_size=self.batch_size,
-    #         num_workers=NUM_WORKERS)
-    #     return test_dataloader
