@@ -1,3 +1,5 @@
+from albumentations import augmentations
+from data.transforms import train_image_augmentation, valid_image_augmentation
 from params import SPLIT_SIZE, BATCH_SIZE, NUM_WORKERS, DATA_PATH, SEED
 from pytorch_lightning import LightningDataModule
 import pandas as pd
@@ -15,11 +17,13 @@ class LitDataClass(LightningDataModule):
                  fold: int = 0,
                  subset: float = 1.0,
                  batch_size: int = BATCH_SIZE,
+                 config: dict = {'img_size': 128},
                  train_val_split: float = SPLIT_SIZE,
                  use_extra_data: bool = False):
         super().__init__(LitDataClass, self)
         self.fold = fold
         self.subset = subset
+        self.config = config
         self.val_data = None
         self.test_data = None
         self.train_data = None
@@ -103,9 +107,11 @@ class LitDataClass(LightningDataModule):
         self.val_data = self.val_data.sample(frac=1).reset_index(drop=True)
 
         self.train_dataset = CassavaDataset(
-            self.train_data)
+            self.train_data, config=self.config,
+            augmentations=train_image_augmentation)
         self.val_dataset = CassavaDataset(
-            self.val_data)
+            self.val_data, config=self.config,
+            augmentations=valid_image_augmentation)
 
         # delete non useful constants
         del self.train_data

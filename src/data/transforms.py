@@ -1,16 +1,15 @@
 import albumentations as A
 import numpy as np
-from params import IMAGE_SIZE
 from torchvision import transforms
 
 
-def train_image_augmentation(image):
+def train_image_augmentation(image, img_size):
     image = np.array(image)
 
     augmentation = A.Compose(
         [
-            A.Resize(IMAGE_SIZE, IMAGE_SIZE),
-            A.CenterCrop(IMAGE_SIZE, IMAGE_SIZE, p=1.0),
+            A.Resize(img_size, img_size),
+            A.CenterCrop(img_size, img_size, p=1.0),
             A.Transpose(p=0.5),
             A.HorizontalFlip(p=0.5),
             A.VerticalFlip(p=0.5),
@@ -41,13 +40,13 @@ def train_image_augmentation(image):
     return augmented_image['image']
 
 
-def valid_image_augmentation(image):
+def valid_image_augmentation(image, img_size):
     image = np.array(image)
 
     augmentation = A.Compose(
         [
-            A.Resize(IMAGE_SIZE, IMAGE_SIZE),
-            A.CenterCrop(IMAGE_SIZE, IMAGE_SIZE, p=1.0),
+            A.Resize(img_size, img_size),
+            A.CenterCrop(img_size, img_size, p=1.0),
             A.Normalize(
                 mean=[0.485, 0.456, 0.406],
                 std=[0.229, 0.224, 0.225],
@@ -63,10 +62,10 @@ def valid_image_augmentation(image):
     return augmented_image['image']
 
 
-def simple_image_preprocess(image):
+def simple_image_preprocess(image, img_size):
     preprocess = transforms.Compose([
-        transforms.Resize(IMAGE_SIZE),
-        transforms.CenterCrop(IMAGE_SIZE),
+        transforms.Resize(img_size),
+        transforms.CenterCrop(img_size),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
                              std=[0.229, 0.224, 0.225]),

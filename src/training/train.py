@@ -3,15 +3,14 @@ from torch import optim
 import torch.nn.functional as F
 import wandb
 from model_zoo.models import get_model
-from params import LR
 from utils import telegram_bot
 import pytorch_lightning as pl
 
 
 class LitModelClass(pl.LightningModule):
-    def __init__(self, name: str, num_classes):
+    def __init__(self, name: str, num_classes, config={}):
         super().__init__()
-        self.save_hyperparameters({"lr": LR})
+        self.config = config
         self.name = name
         self.num_classes = num_classes
         self.accuracy = pl.metrics.Accuracy()
@@ -33,8 +32,12 @@ class LitModelClass(pl.LightningModule):
         loss = F.cross_entropy(y_hat, y)
 
         acc = self.accuracy(torch.argmax(y_hat, dim=1), y)
-        pbar = {"train_acc": acc}
-        return {"loss": loss, "progress_bar": pbar}
+        pbar = {'train_acc': acc}
+
+        # log the results to wandb
+        wandb.log({'train_loss': loss, 'train_acc': acc})
+
+        return {'loss': loss, 'progress_bar': pbar}
 
     def validation_step(self, batch, batch_idx):
         results = self.training_step(batch, batch_idx)
@@ -46,15 +49,18 @@ class LitModelClass(pl.LightningModule):
         avg_val_acc = torch.tensor([x['progress_bar']['train_acc']
                                     for x in val_step_outputs]).mean()
 
-        pbar = {"val_acc": avg_val_acc}
+        pbar = {'val_acc': avg_val_acc}
 
         # send a notification
-        telegram_bot(f"Validation epoch is over ✨ {pbar} ✨")
+        message = f'Validation epoch is over, val_acc: ✨ {avg_val_acc} ✨'
+        telegram_bot(message)
 
-        wandb.log({'val_loss': avg_val_loss, "progress_bar": pbar})
+        # log the results to wandb
+        wandb.log({'val_loss': avg_val_loss, 'val_acc': avg_val_acc})
 
-        return {'val_loss': avg_val_loss, "progress_bar": pbar}
+        return {'val_loss': avg_val_loss, 'progress_bar': pbar}
 
     def configure_optimizers(self):
         # optim.Adam(self.parameters(), lr=self.hparams.lr)
-        return optim.Adam(self.model.parameters(), lr=LR)
+        return optim.Adam(self.model.parameters(),
+                          lr=self.config['lr'])

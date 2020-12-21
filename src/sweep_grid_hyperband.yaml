@@ -1,0 +1,29 @@
+program: main.py
+method: bayes
+metric:
+  name: val_acc
+  goal: maximize
+parameters:
+  img_size:
+    values: [32, 64, 128, 256]
+  # batch_size:
+  #   values: [8, 16, 32, 64]
+  use_extra_data:
+    distribution: categorical
+    values:
+      - 'true'
+      - 'false'
+  dropout:
+    values: [0.1, 0.2, 0.3]
+  lr:
+    values: [0.001, 0.005, 0.0005]
+  # fold:
+  #   distribution: int_uniform
+  #   min: 0
+  #   max: 4
+  epochs:
+    values: [3, 5, 7, 9, 15, 20]
+  early_terminate:
+    type: hyperband
+    max_iter: 27
+    s: 2
