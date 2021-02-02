@@ -16,7 +16,7 @@ if __name__ == "__main__":
         dropout=DROPOUT,
         batch_size=BATCH_SIZE,
         lr=LR,
-        use_extra_data=True,
+        use_extra_data=False,
         epochs=EPOCHS,
         subset=SUBSET,
         fold=FOLD

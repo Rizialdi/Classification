@@ -45,12 +45,13 @@ def accuracy_fn(pred: torch.Tensor, truth: torch.Tensor):
 
 def telegram_bot(bot_message):
     # load env variables from .env
-    bot_token = config('BOT_TOKEN')
-    bot_chatID = config('CHAT_ID')
+    #bot_token = config('BOT_TOKEN')
+    #bot_chatID = config('CHAT_ID')
 
-    send_text = \
-        f"https://api.telegram.org/bot{bot_token}/" + \
-        f"sendMessage?chat_id={bot_chatID}" + \
-        f"&parse_mode=Markdown&text={bot_message}"
+    #send_text = \
+    #   f"https://api.telegram.org/bot{bot_token}/" + \
+    #   f"sendMessage?chat_id={bot_chatID}" + \
+    #   f"&parse_mode=Markdown&text={bot_message}"
 
-    requests.post(send_text)
+    #requests.post(send_text)
+    pass

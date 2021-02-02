@@ -1,0 +1,5 @@
+To add to:
+/root/.netrc
+machine api.wandb.ai
+  login user
+  password 5dfdf9c5bd3a230974b6c53572e48c4f5626586f
